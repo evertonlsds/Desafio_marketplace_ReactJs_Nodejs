@@ -12,7 +12,7 @@ rotas.post('/usuarios', usuarios.cadastrarUsuario);
 
 
 //login
-//rotas.post('/login', login.login);
+rotas.post('/login', login.login);
 
 //filtro para verificar usuario logado
 //rotas.use(verificaLogin);
