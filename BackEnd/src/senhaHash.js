@@ -1,1 +1,1 @@
-module.exports = 'senhaDaApiMarketPlace';
+module.exports = 'senhaDaApiMarketPlaceDesafio';
