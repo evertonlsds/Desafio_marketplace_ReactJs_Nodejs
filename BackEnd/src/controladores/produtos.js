@@ -2,11 +2,44 @@ const conexao = require ('../conexao');
 
 
 const listarProdutos = async (req, res) => {
+    const { usuario } = req;
+    const { categoria } = req.query;
+
+
+    try {
+
+        let condicao = '';
+        const params = [];
+
+        if(categoria){
+            condicao += 'and categoria ilike $2';
+            params.push(`%${categoria}%`);
+        }
+        const query =`select * from produtos where usuario_id = $1  ${condicao}`;
+        const { rows: produtos } = await conexao.query(query, [usuario.id, ...params]);
+
+        return res.status(200).json(produtos);
+    } catch (error) {
+        return res.status(400).json(error.message)   
+    }
 
 }
 
 const obterProduto = async (req, res) => {
+    const { usuario } = req;
+    const { id } = req.params;
+    
+    try {
+        const query = `select * from produtos where usuario_id = $1 and id = $2 `;
+        const { rows, rowCount } = await conexao.query(query, [usuario.id, id]);
 
+        if(rowCount === 0 )
+        return res.status(404).json("Produto não encontrado");
+
+        return res.status(200).json(rows[0]);
+    } catch (error) {
+        return res.status(400).json(error.message); 
+    }
 }
 
 const cadastrarProduto = async (req, res) => {
